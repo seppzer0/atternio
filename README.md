@@ -104,4 +104,4 @@ The following SAST tools' reports are supported by atternio:
 
 ## See also
 
-- [TODO List](documentation/TODO.md)
+- [TODO List](TODO.md)
