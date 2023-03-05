@@ -1,52 +1,47 @@
 # Introduction
+
 Atternio is a simple tool for CWE prioritization according to MITRE CAPEC dictionary.
 
 The tool utilises open source CAPEC data provided in the form of JSON (STIX 2.x) files.
 
 
+## Algorithm
 
-<br>
-
-# Algorithm
 The prioritization process is done according to the following algorithm: 
 
-<br>
+1) The tool receives a SAST report as an input, from which all CWE numbers are extracted;
 
-1)  The tool receives a SAST report as an input, from which all CWE numbers are extracted;
-
-2)  Each CWE is searched through CAPEC data to determine attack patterns (CAPEC-IDs) it can used in;
+2) Each CWE is searched through CAPEC data to determine attack patterns (CAPEC-IDs) it can used in;
 
 3) When analyzing CAPEC data, the following metrics are taken into account:
-   * Severity (*x_capec_severity*);
-   * Likelihood (*x_capec_likelihood_of_attack*).
+   * severity (`x_capec_severity`);
+   * likelihood (`x_capec_likelihood_of_attack`).
 
-<br>
+4) An individual CWE can be found in multiple CAPEC-IDs.
 
-4) An individual CWE can be found in multiple CAPEC-IDs. <br>
+   For each CWE in CAPEC-ID risk points are calculated using the following formula:
+   ```txt
+   cwe_risk = severity + likelihood
+   ```
 
-   For each CWE in CAPEC-ID risk points are calculated using the following formula: <br>
-   ***cwe_risk = severity + likelihood***
+   Each CAPEC-ID can contain multiple detected CWEs:
+   ```txt
+   capec_risk = sum(cwe_risk)
+   ```
 
-   Each CAPEC-ID can contain multiple detected CWEs: <br>
-   ***capec_risk = sum(cwe_risk)***
+   ```txt
+   ```total_risk = sum(capec_risk)
+   ```
 
-   Finally, the total number of risk points: <br>
-   ***total_risk = sum(capec_risk)***
+5) When the risk enumeration is complete, the tool will output 4 tables:
+   * `All Records` - all CAPEC-IDs and CWEs detected from provided report;
+   * `Critical Records` - CAPEC-IDs and CWEs with most amount of risk points;
+   * `Critical CAPEC-CWE` - pairs of critical CAPEC-IDs and CWEs;
+   * `Risk Distribution` - % of each CAPEC-ID's risk points from total amount.
 
-<br>
+## Usage
 
-5) When the risk enumeration is complete, the tool will output 4 tables: <br>
-   * **All Records** - all CAPEC-IDs and CWEs detected from provided report;
-   * **Critical Records** - CAPEC-IDs and CWEs with most amount of risk points;
-   * **Critical CAPEC-CWE** - pairs of critical CAPEC-IDs and CWEs;
-   * **Risk Distribution** - % of each CAPEC-ID's risk points from total amount.
-
-
-
-<br>
-
-# Usage
-```
+```help
 $ python3 src/app.py --help
 usage: app.py [-h] [-o OUTPUT] [--results] analyser path_to_report
 
@@ -63,30 +58,41 @@ optional arguments:
   --results             show only RESULTS section
  ```
 
-<br>
 
-# Building
-Standalone binary build: <br>
-`pyinstaller -F --noupx src/app.py -n atternio`
+## Building
 
-Docker image build: <br>
-`docker build --no-cache . -t atternio`
+Standalone binary build:
 
-<br>
+```sh
+pyinstaller -F --noupx src/app.py -n atternio
+```
 
-# Supported SAST tools
+Docker image build:
+```sh
+docker build --no-cache . -t atternio
+```
+
+## Examples
+
+Run directly from sources:
+```sh
+python3 src/app.py cppcheck report_samples cppcheck.xml
+```
+
+Run as a standalone binary:
+
+```sh
+./atternio cppcheck report_samples/cppcheck.xml
+```
+
+Run within a Docker container:
+```sh
+docker run --rm -it -v $(pwd)/report_samples:/report atternio cppcheck ../report/cppcheck.xml
+```
+
+## Supported SAST tools
+
 The following SAST tools' reports are supported by atternio:
+
 * Cppcheck (C/C++);
-* Bandit (Python)
-
-<br>
-
-# Examples
-Run directly from sources: <br>
-`python3 src/app.py cppcheck report_samples/cppcheck.xml`
-
-Run as a standalone binary: <br>
-`./atternio cppcheck report_samples/cppcheck.xml`
-
-Run within a Docker container: <br>
-`docker run --rm -it -v $(pwd)/report_samples:/report atternio cppcheck ../report/cppcheck.xml`
+* Bandit (Python).
