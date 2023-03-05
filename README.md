@@ -1,13 +1,14 @@
-# Introduction
+# Atternio — attack patterns in software
+
+## Description
 
 Atternio is a simple tool for CWE prioritization according to MITRE CAPEC dictionary.
 
 The tool utilises open source CAPEC data provided in the form of JSON (STIX 2.x) files.
 
-
 ## Algorithm
 
-The prioritization process is done according to the following algorithm: 
+The prioritization process is done according to the following algorithm:
 
 1) The tool receives a SAST report as an input, from which all CWE numbers are extracted;
 
@@ -34,10 +35,10 @@ The prioritization process is done according to the following algorithm:
    ```
 
 5) When the risk enumeration is complete, the tool will output 4 tables:
-   * `All Records` - all CAPEC-IDs and CWEs detected from provided report;
-   * `Critical Records` - CAPEC-IDs and CWEs with most amount of risk points;
-   * `Critical CAPEC-CWE` - pairs of critical CAPEC-IDs and CWEs;
-   * `Risk Distribution` - % of each CAPEC-ID's risk points from total amount.
+   * `All Records` : all CAPEC-IDs and CWEs detected from provided report;
+   * `Critical Records` : CAPEC-IDs and CWEs with most amount of risk points;
+   * `Critical CAPEC-CWE` : pairs of critical CAPEC-IDs and CWEs;
+   * `Risk Distribution` : % of each CAPEC-ID's risk points from total amount.
 
 ## Usage
 
@@ -75,6 +76,7 @@ docker build --no-cache . -t atternio
 ## Examples
 
 Run directly from sources:
+
 ```sh
 python3 src/app.py cppcheck report_samples cppcheck.xml
 ```
@@ -86,6 +88,7 @@ Run as a standalone binary:
 ```
 
 Run within a Docker container:
+
 ```sh
 docker run --rm -it -v $(pwd)/report_samples:/report atternio cppcheck ../report/cppcheck.xml
 ```
