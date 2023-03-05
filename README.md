@@ -15,30 +15,32 @@ The prioritization process is done according to the following algorithm:
 2) Each CWE is searched through CAPEC data to determine attack patterns (CAPEC-IDs) it can used in;
 
 3) When analyzing CAPEC data, the following metrics are taken into account:
-   * severity (`x_capec_severity`);
-   * likelihood (`x_capec_likelihood_of_attack`).
+   - severity (`x_capec_severity`);
+   - likelihood (`x_capec_likelihood_of_attack`).
 
 4) An individual CWE can be found in multiple CAPEC-IDs.
 
    For each CWE in CAPEC-ID risk points are calculated using the following formula:
+
    ```txt
    cwe_risk = severity + likelihood
    ```
 
    Each CAPEC-ID can contain multiple detected CWEs:
+
    ```txt
    capec_risk = sum(cwe_risk)
    ```
 
    ```txt
-   ```total_risk = sum(capec_risk)
+   total_risk = sum(capec_risk)
    ```
 
 5) When the risk enumeration is complete, the tool will output 4 tables:
-   * `All Records` : all CAPEC-IDs and CWEs detected from provided report;
-   * `Critical Records` : CAPEC-IDs and CWEs with most amount of risk points;
-   * `Critical CAPEC-CWE` : pairs of critical CAPEC-IDs and CWEs;
-   * `Risk Distribution` : % of each CAPEC-ID's risk points from total amount.
+   - `All Records` : all CAPEC-IDs and CWEs detected from provided report;
+   - `Critical Records` : CAPEC-IDs and CWEs with most amount of risk points;
+   - `Critical CAPEC-CWE` : pairs of critical CAPEC-IDs and CWEs;
+   - `Risk Distribution` : % of each CAPEC-ID's risk points from total amount.
 
 ## Usage
 
@@ -59,16 +61,16 @@ optional arguments:
   --results             show only RESULTS section
  ```
 
-
 ## Building
 
 Standalone binary build:
 
 ```sh
-pyinstaller -F --noupx src/app.py -n atternio
+python3 -m pyinstaller -F --noupx src/app.py -n atternio
 ```
 
 Docker image build:
+
 ```sh
 docker build --no-cache . -t atternio
 ```
@@ -97,5 +99,9 @@ docker run --rm -it -v $(pwd)/report_samples:/report atternio cppcheck ../report
 
 The following SAST tools' reports are supported by atternio:
 
-* Cppcheck (C/C++);
-* Bandit (Python).
+- Cppcheck (C/C++);
+- Bandit (Python).
+
+## See also
+
+- [TODO List](documentation/TODO.md)
