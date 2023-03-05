@@ -1,0 +1,126 @@
+errors: []
+generated_at: '2022-03-06T13:50:45Z'
+metrics:
+  _totals:
+    CONFIDENCE.HIGH: 6
+    CONFIDENCE.LOW: 0
+    CONFIDENCE.MEDIUM: 0
+    CONFIDENCE.UNDEFINED: 0
+    SEVERITY.HIGH: 5
+    SEVERITY.LOW: 1
+    SEVERITY.MEDIUM: 0
+    SEVERITY.UNDEFINED: 0
+    loc: 300
+    nosec: 0
+    skipped_tests: 0
+  examplee.py:
+    CONFIDENCE.HIGH: 6
+    CONFIDENCE.LOW: 0
+    CONFIDENCE.MEDIUM: 0
+    CONFIDENCE.UNDEFINED: 0
+    SEVERITY.HIGH: 5
+    SEVERITY.LOW: 1
+    SEVERITY.MEDIUM: 0
+    SEVERITY.UNDEFINED: 0
+    loc: 300
+    nosec: 0
+    skipped_tests: 0
+results:
+- code: 7 import warnings\n8 import subprocess\n9 import shutil\n
+  col_offset: 0
+  filename: examplee.py
+  issue_confidence: HIGH
+  issue_cwe:
+    id: 78
+    link: https://cwe.mitre.org/data/definitions/78.html
+  issue_severity: LOW
+  issue_text: Consider possible security implications associated with the subprocess
+    module.
+  line_number: 8
+  line_range:
+  - 8
+  more_info: https://bandit.readthedocs.io/en/1.7.4/blacklists/blacklist_imports.html#b404-import-subprocess
+  test_id: B404
+  test_name: blacklist
+- code: '125     # extract recipe revision (aka RREV)\n126     rrev_tmp = subprocess.check_output(''{}
+    --revisions''.format(cmd), shell=True)\n127     rrev = rrev_tmp.decode(''utf-8'').split("
+    ")[0]\n'
+  col_offset: 15
+  filename: examplee.py
+  issue_confidence: HIGH
+  issue_cwe:
+    id: 78
+    link: https://cwe.mitre.org/data/definitions/78.html
+  issue_severity: HIGH
+  issue_text: subprocess call with shell=True identified, security issue.
+  line_number: 126
+  line_range:
+  - 126
+  more_info: https://bandit.readthedocs.io/en/1.7.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+  test_id: B602
+  test_name: subprocess_popen_with_shell_equals_true
+- code: '128     # extract package_id\n129     pid_tmp = subprocess.check_output("{}#{}".format(cmd,
+    rrev), shell=True)\n130     for line in pid_tmp.decode(''utf-8'').split("\n"):\n'
+  col_offset: 14
+  filename: examplee.py
+  issue_confidence: HIGH
+  issue_cwe:
+    id: 78
+    link: https://cwe.mitre.org/data/definitions/78.html
+  issue_severity: HIGH
+  issue_text: subprocess call with shell=True identified, security issue.
+  line_number: 129
+  line_range:
+  - 129
+  more_info: https://bandit.readthedocs.io/en/1.7.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+  test_id: B602
+  test_name: subprocess_popen_with_shell_equals_true
+- code: '133     # extract package revision (aka PREV)\n134     prev_tmp = subprocess.check_output(''{}#{}:{}
+    --revisions''.format(cmd, rrev, pid), shell=True)\n135     prev = prev_tmp.decode(''utf-8'').split("
+    ")[0]\n'
+  col_offset: 15
+  filename: examplee.py
+  issue_confidence: HIGH
+  issue_cwe:
+    id: 78
+    link: https://cwe.mitre.org/data/definitions/78.html
+  issue_severity: HIGH
+  issue_text: subprocess call with shell=True identified, security issue.
+  line_number: 134
+  line_range:
+  - 134
+  more_info: https://bandit.readthedocs.io/en/1.7.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+  test_id: B602
+  test_name: subprocess_popen_with_shell_equals_true
+- code: '182     print("[CMD]: {}".format(cmd_prev_pkg))\n183     check_pkg_tmp =
+    subprocess.check_output(cmd_prev_pkg, shell=True)\n184     check_pkg = check_pkg_tmp.decode(''utf-8'')\n'
+  col_offset: 20
+  filename: examplee.py
+  issue_confidence: HIGH
+  issue_cwe:
+    id: 78
+    link: https://cwe.mitre.org/data/definitions/78.html
+  issue_severity: HIGH
+  issue_text: subprocess call with shell=True identified, security issue.
+  line_number: 183
+  line_range:
+  - 183
+  more_info: https://bandit.readthedocs.io/en/1.7.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+  test_id: B602
+  test_name: subprocess_popen_with_shell_equals_true
+- code: '201     # get the list of current (==old) alias''s RREVs\n202     rrev_raw_list
+    = subprocess.check_output(cmd, shell=True)\n203     rrev_out_list_tmp = rrev_raw_list.decode(''utf-8'').splitlines()[1:]\n'
+  col_offset: 20
+  filename: examplee.py
+  issue_confidence: HIGH
+  issue_cwe:
+    id: 78
+    link: https://cwe.mitre.org/data/definitions/78.html
+  issue_severity: HIGH
+  issue_text: subprocess call with shell=True identified, security issue.
+  line_number: 202
+  line_range:
+  - 202
+  more_info: https://bandit.readthedocs.io/en/1.7.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+  test_id: B602
+  test_name: subprocess_popen_with_shell_equals_true

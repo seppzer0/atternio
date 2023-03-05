@@ -1,0 +1,81 @@
+Run started:2022-03-06 13:50:14.172700
+
+Test results:
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   Location: examplee.py:8:0
+   More Info: https://bandit.readthedocs.io/en/1.7.4/blacklists/blacklist_imports.html#b404-import-subprocess
+7	import warnings
+8	import subprocess
+9	import shutil
+
+--------------------------------------------------
+>> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   Location: examplee.py:126:15
+   More Info: https://bandit.readthedocs.io/en/1.7.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+125	    # extract recipe revision (aka RREV)
+126	    rrev_tmp = subprocess.check_output('{} --revisions'.format(cmd), shell=True)
+127	    rrev = rrev_tmp.decode('utf-8').split(" ")[0]
+
+--------------------------------------------------
+>> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   Location: examplee.py:129:14
+   More Info: https://bandit.readthedocs.io/en/1.7.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+128	    # extract package_id
+129	    pid_tmp = subprocess.check_output("{}#{}".format(cmd, rrev), shell=True)
+130	    for line in pid_tmp.decode('utf-8').split("\n"):
+
+--------------------------------------------------
+>> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   Location: examplee.py:134:15
+   More Info: https://bandit.readthedocs.io/en/1.7.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+133	    # extract package revision (aka PREV)
+134	    prev_tmp = subprocess.check_output('{}#{}:{} --revisions'.format(cmd, rrev, pid), shell=True)
+135	    prev = prev_tmp.decode('utf-8').split(" ")[0]
+
+--------------------------------------------------
+>> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   Location: examplee.py:183:20
+   More Info: https://bandit.readthedocs.io/en/1.7.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+182	    print("[CMD]: {}".format(cmd_prev_pkg))
+183	    check_pkg_tmp = subprocess.check_output(cmd_prev_pkg, shell=True)
+184	    check_pkg = check_pkg_tmp.decode('utf-8')
+
+--------------------------------------------------
+>> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   Location: examplee.py:202:20
+   More Info: https://bandit.readthedocs.io/en/1.7.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+201	    # get the list of current (==old) alias's RREVs
+202	    rrev_raw_list = subprocess.check_output(cmd, shell=True)
+203	    rrev_out_list_tmp = rrev_raw_list.decode('utf-8').splitlines()[1:]
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 300
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 1
+		Medium: 0
+		High: 5
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 6
+Files skipped (0):
