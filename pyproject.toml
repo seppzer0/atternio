@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "atternio"
+version = "0.2.0"
+description = "A PoC tool for CWE prioritization according to MITRE CAPEC dictionary."
+authors = ["seppzer0"]
+repository = "https://github.com/seppzer0/atternio"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+argparse = "*"
+tabulate = "*"
+flawfinder = "*"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

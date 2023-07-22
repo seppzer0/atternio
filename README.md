@@ -1,92 +1,59 @@
 # Introduction
-Atternio is a simple tool for CWE prioritization according to MITRE CAPEC dictionary.
+
+Atternio is a PoC tool powered by [flawfinder](https://github.com/david-a-wheeler/flawfinder) for CWE prioritization according to MITRE CAPEC dictionary.
 
 The tool utilises open source CAPEC data provided in the form of JSON (STIX 2.x) files.
 
+## Algorithm
 
+The tool receives a path to C/C++ sources as an input, which is passed to flawfinder to find CWEs.
 
-<br>
+Each CWE is searched through CAPEC data to determine attack patterns (CAPEC-IDs) it can used in.
 
-# Algorithm
-The prioritization process is done according to the following algorithm: 
+When analyzing CAPEC data, the following metrics are taken into account:
 
-<br>
+* Severity (`x_capec_severity`);
+* Likelihood (`x_capec_likelihood_of_attack`).
 
-1)  The tool receives a SAST report as an input, from which all CWE numbers are extracted;
+An individual CWE can be found in multiple CAPEC-IDs.
 
-2)  Each CWE is searched through CAPEC data to determine attack patterns (CAPEC-IDs) it can used in;
+For each CWE in CAPEC-ID risk points are calculated using the following formula:
 
-3) When analyzing CAPEC data, the following metrics are taken into account:
-   * Severity (*x_capec_severity*);
-   * Likelihood (*x_capec_likelihood_of_attack*).
-
-<br>
-
-4) An individual CWE can be found in multiple CAPEC-IDs. <br>
-
-   For each CWE in CAPEC-ID risk points are calculated using the following formula: <br>
-   ***cwe_risk = severity + likelihood***
-
-   Each CAPEC-ID can contain multiple detected CWEs: <br>
-   ***capec_risk = sum(cwe_risk)***
-
-   Finally, the total number of risk points: <br>
-   ***total_risk = sum(capec_risk)***
-
-<br>
-
-5) When the risk enumeration is complete, the tool will output 4 tables: <br>
-   * **All Records** - all CAPEC-IDs and CWEs detected from provided report;
-   * **Critical Records** - CAPEC-IDs and CWEs with most amount of risk points;
-   * **Critical CAPEC-CWE** - pairs of critical CAPEC-IDs and CWEs;
-   * **Risk Distribution** - % of each CAPEC-ID's risk points from total amount.
-
-
-
-<br>
-
-# Usage
+```text
+cwe_risk = severity + likelihood
 ```
-$ python3 src/app.py --help
-usage: app.py [-h] [-o OUTPUT] [--results] analyser path_to_report
 
-A tool for CWE prioritization according to MITRE CAPEC dictionary.
+Each CAPEC-ID can contain multiple detected CWEs:
 
-positional arguments:
-  analyser              name of SAST tool used for the provided report
-  path_to_report        path to report file
+```text
+capec_risk = sum(cwe_risk)
+```
+
+Finally, the total number of risk points:
+
+```text
+total_risk = sum(capec_risk)
+```
+
+When the risk enumeration is complete, the tool will output 2 tables:
+
+* **CWE Records** - all CWEs detected with their location in provided sources;
+* **Prioritized CWE Records** - prioritized CWEs with related CAPECs and percentage of shared risk.
+
+## Usage
+
+```help
+$ python3 atternio/ --help
+usage: [-h] --source PATH_INPUT [--install-dictionary] [-o OUTPUT] [--results]
+
+Atternio - a PoC tool for CWE prioritization according to MITRE CAPEC dictionary.
 
 optional arguments:
   -h, --help            show this help message and exit
+  --source PATH_INPUT   path to file or directory
+  --install-dictionary  if CAPEC dictionary is not present, install it
+                        automatically
   -o OUTPUT, --output OUTPUT
                         path to output file
   --results             show only RESULTS section
  ```
-
-<br>
-
-# Building
-Standalone binary build: <br>
-`pyinstaller -F --noupx src/app.py -n atternio`
-
-Docker image build: <br>
-`docker build --no-cache . -t atternio`
-
-<br>
-
-# Supported SAST tools
-The following SAST tools' reports are supported by atternio:
-* Cppcheck (C/C++);
-* Bandit (Python)
-
-<br>
-
-# Examples
-Run directly from sources: <br>
-`python3 src/app.py cppcheck report_samples/cppcheck.xml`
-
-Run as a standalone binary: <br>
-`./atternio cppcheck report_samples/cppcheck.xml`
-
-Run within a Docker container: <br>
-`docker run --rm -it -v $(pwd)/report_samples:/report atternio cppcheck ../report/cppcheck.xml`

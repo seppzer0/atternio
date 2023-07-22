@@ -1,17 +1,15 @@
-FROM debian:latest
-WORKDIR /atternio
-RUN rm -rf .git* && \
-    apt update && \ 
-    apt full-upgrade -y && \
-    apt install -y \
-            python3 \
-            python3-pip \
-            git \
-    && \
-    python3 -m pip install tabulate && \
-    # CAPEC dictionary
-    git clone --depth 1 https://github.com/mitre/cti && \
-    mv cti/capec/2.1/attack-pattern ./attack-patterns && \
-    rm -rf cti
-COPY ./src ./app
-ENTRYPOINT [ "python3", "app/app.py" ]
+FROM python:3.11-alpine3.18 as base
+
+ADD atternio /opt/atternio
+ADD pyproject.toml /opt
+ADD poetry.lock /opt
+ADD README.md /opt/README.md
+ENV PYTHONPATH /opt
+WORKDIR /opt
+
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install poetry twine && \
+    python3 -m poetry config virtualenvs.create false && \
+    python3 -m poetry install --no-root
+
+CMD [ "/bin/sh" ]
