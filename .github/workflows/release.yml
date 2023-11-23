@@ -21,4 +21,4 @@ jobs:
       - name: Upload
         run: |
           python3 -m pip install twine
-          docker run --rm -i atternio /bin/sh -c "python3 -m poetry build && python3 -m twine upload -u ${{ secrets.PYPI_USER }} -p ${{ secrets.PYPI_PWD }} -r pypi --repository-url https://upload.pypi.org/legacy/ dist/*"
+          docker run --rm -i atternio /bin/sh -c "python3 -m poetry build && python3 -m twine upload -u ${{ secrets.PYPI_USER }} -p ${{ secrets.PYPI_PWD }} -r pypi --repository-url https://upload.pypi.org/legacy/ dist/* --skip-existing"
